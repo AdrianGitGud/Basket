@@ -1,6 +1,5 @@
 package com.example.basket
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,8 +16,15 @@ class ListActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        val bundle =  intent.extras
+        val email = bundle?.getString("email")
+        val provider = bundle?.getString("provider")
+
         binding.fabAddlist.setOnClickListener {
-          startActivity(Intent(this, CreateListActivity::class.java))
+            val profileIntent = Intent(this, CreateListActivity::class.java).apply {
+                putExtra("provider", provider)
+            }
+            startActivity(profileIntent)
         }
 
     }

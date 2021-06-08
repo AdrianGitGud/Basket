@@ -1,6 +1,7 @@
 package com.example.basket
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,9 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CreateListActivity : AppCompatActivity() {
     private var userShoppingListsRef: CollectionReference? = null
-    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-    val userName = prefs.getString("name", null)
-    val userEmail = prefs.getString("email", null)
 
     // Binding
     private lateinit var binding: ActivityCreateListBinding
@@ -24,9 +22,8 @@ class CreateListActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // Conseguir el nombre
-
-
+        // Inicializaciones
+        userShoppingList()
 
 
         binding.siguienteButton.setOnClickListener {
@@ -37,12 +34,9 @@ class CreateListActivity : AppCompatActivity() {
 
             } else {
 
-                val shoppingListName =
-                        binding.textInputEditText
-                                .toString()
-                                .trim { it <= ' ' }
+                val shoppingListName = binding.textInputEditText.text.toString()
                 addShoppingList(shoppingListName)
-
+                startActivity(Intent(this, ListActivity::class.java))
             }
         }
 
@@ -50,16 +44,22 @@ class CreateListActivity : AppCompatActivity() {
             onBackPressed()
             finish()
         }
+    }
+
+    private fun userShoppingList(){
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val userEmail = prefs.getString("email", null)
 
         userShoppingListsRef = FirebaseFirestore.getInstance()
                 .collection("shoppingLists")
                 .document(userEmail.toString()).collection("userShoppingLists")
-
-
-
     }
 
     private fun addShoppingList(shoppingListName: String) {
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val userEmail = prefs.getString("email", null)
 
         var shoppingListId = userShoppingListsRef?.document()?.id
         val shoppingListModel = ShoppingListModel(shoppingListId, shoppingListName, userEmail)

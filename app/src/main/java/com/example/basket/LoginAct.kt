@@ -1,13 +1,10 @@
 package com.example.basket
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.example.basket.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
@@ -26,7 +23,6 @@ import com.google.firebase.installations.FirebaseInstallations
 class LoginAct : AppCompatActivity() {
     // Value default de google
     private val GOOGLE_SIGN_IN = 100
-    private var userName = ""
 
     // Callback Manager de Facebook
     private val callbackManager = CallbackManager.Factory.create()
@@ -77,12 +73,11 @@ class LoginAct : AppCompatActivity() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
         val provider = prefs.getString("provider", null)
-        val user = prefs.getString("user", null)
 
         // Comprobamos si ya existe una sesión activa. Si es así, nos saltamos el login.
-        if (email != null && provider != null && user != null) {
+        if (email != null && provider != null) {
             binding.authLayout.visibility = View.INVISIBLE
-            showHome(email, ProviderType.valueOf(provider), user)
+            showHome(email, ProviderType.valueOf(provider))
         }
     }
 
@@ -95,8 +90,8 @@ class LoginAct : AppCompatActivity() {
                                 binding.PasswordEditText.text.toString()).addOnCompleteListener {
 
                             if (it.isSuccessful){
-                                getName()
-                                showHome(it.result?.user?.email ?: "", ProviderType.BASICO, userName)
+
+                                showHome(it.result?.user?.email ?: "", ProviderType.BASICO)
                             } else {
                                 showAlert()
                             }
@@ -111,8 +106,7 @@ class LoginAct : AppCompatActivity() {
                                 binding.PasswordEditText.text.toString()).addOnCompleteListener {
 
                             if (it.isSuccessful){
-                                getName()
-                                showHome(it.result?.user?.email ?: "", ProviderType.BASICO, userName)
+                                showHome(it.result?.user?.email ?: "", ProviderType.BASICO)
                             } else {
                                 showAlert()
                             }
@@ -136,25 +130,6 @@ class LoginAct : AppCompatActivity() {
         }
         // Boton Login Facebook
         binding.facebookButton.setOnClickListener {
-            val builder = AlertDialog.Builder(this@LoginAct)
-            builder.setTitle("¿Cómo deberíamos llamarte?")
-
-            val input = EditText(this@LoginAct)
-
-            input.hint = "Introduce tu nombre"
-            input.inputType = InputType.TYPE_CLASS_TEXT
-            builder.setView(input)
-
-
-            builder.setCancelable(false).setPositiveButton("Aceptar"){ dialogInterface, i ->
-                if (input.text.toString().trim().isEmpty()) {
-                    input.error = "Introduce tu nombre, porfavor";
-                }else{
-                    userName = input.text.toString()
-                }
-            }.setNegativeButton("Cancel") { dialogInterface, i ->
-                dialogInterface.dismiss()
-            }
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
 
             LoginManager.getInstance().registerCallback(callbackManager,
@@ -171,7 +146,7 @@ class LoginAct : AppCompatActivity() {
                             FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
 
                                 if (it.isSuccessful){
-                                    showHome(it.result?.user?.email ?: "", ProviderType.FACEBOOK, userName)
+                                    showHome(it.result?.user?.email ?: "", ProviderType.FACEBOOK)
 
                                 } else {
                                     showAlert()
@@ -202,16 +177,15 @@ class LoginAct : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showHome(email: String, provider: ProviderType, name: String) {
+    private fun showHome(email: String, provider: ProviderType) {
         val homeIntent = Intent(this, HomeActivity::class.java).apply{
             putExtra("email", email)
             putExtra("provider", provider.name)
-            putExtra("name", name)
         }
         startActivity(homeIntent)
     }
 
-    private fun getName() {
+    /*private fun getName() {
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("¿Cómo deberíamos llamarte?")
@@ -230,7 +204,7 @@ class LoginAct : AppCompatActivity() {
 
         val alertDialog = builder.create()
         alertDialog.show()
-    }
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -252,8 +226,7 @@ class LoginAct : AppCompatActivity() {
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
 
                         if (it.isSuccessful){
-                            userName = GoogleSignIn.getLastSignedInAccount(this)?.displayName.toString()
-                            showHome(account.email ?: "", ProviderType.GOOGLE, userName)
+                            showHome(account.email ?: "", ProviderType.GOOGLE)
                         } else {
                             showAlert()
                         }
