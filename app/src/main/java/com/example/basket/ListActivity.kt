@@ -1,13 +1,11 @@
 package com.example.basket
 
+import android.R
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.basket.databinding.ActivityListBinding
+
 
 class ListActivity : AppCompatActivity() {
     // Binding
@@ -19,11 +17,8 @@ class ListActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-
         binding.fabAddlist.setOnClickListener {
-            val createListIntent = Intent(this, CreateListActivity::class.java).apply{
-            }
-            startActivity(createListIntent)
+          startActivity(Intent(this, CreateListActivity::class.java))
         }
 
     }
