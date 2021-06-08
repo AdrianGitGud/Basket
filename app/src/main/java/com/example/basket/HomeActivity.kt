@@ -35,8 +35,16 @@ class HomeActivity : AppCompatActivity() {
         prefs.putString("provider", provider)
         prefs.apply()
 
-        binding.testButton.setOnClickListener {
+        binding.profileButton.setOnClickListener {
             val profileIntent = Intent(this, ProfileActivity::class.java).apply {
+                putExtra("provider", provider)
+            }
+            startActivity(profileIntent)
+            finish()
+        }
+
+        binding.listButton.setOnClickListener {
+            val profileIntent = Intent(this, ListActivity::class.java).apply {
                 putExtra("provider", provider)
             }
             startActivity(profileIntent)
