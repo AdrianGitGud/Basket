@@ -44,7 +44,6 @@ class HomeActivity : AppCompatActivity() {
                 putExtra("provider", provider)
             }
             startActivity(profileIntent)
-            finish()
         }
 
         binding.listButton.setOnClickListener {
@@ -53,7 +52,6 @@ class HomeActivity : AppCompatActivity() {
                 putExtra("provider", provider)
             }
             startActivity(listIntent)
-            finish()
         }
     }
 
