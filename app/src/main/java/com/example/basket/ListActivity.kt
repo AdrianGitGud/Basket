@@ -13,6 +13,10 @@ import com.google.firebase.firestore.Query
 
 class ListActivity : AppCompatActivity() {
     // Binding
+    private lateinit var newArrayList: ArrayList<Lists>
+    lateinit var shoppingListName: Array<String>
+    lateinit var createdBy: Array<String>
+    lateinit var date: Array<String>
     private lateinit var binding: ActivityListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         // Binding
