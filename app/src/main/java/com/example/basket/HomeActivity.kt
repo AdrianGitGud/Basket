@@ -38,7 +38,6 @@ class HomeActivity : AppCompatActivity() {
         prefs.apply()
 
 
-                //GoogleSignIn.getLastSignedInAccount(this)?.displayName.toString()
 
         binding.profileButton.setOnClickListener {
             val profileIntent = Intent(this, ProfileActivity::class.java).apply {

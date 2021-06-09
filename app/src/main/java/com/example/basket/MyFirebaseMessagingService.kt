@@ -12,7 +12,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         Looper.prepare()
 
         Handler(Looper.getMainLooper()).post {
-            Toast.makeText(baseContext, p0.notification?.title, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, p0.notification?.title, Toast.LENGTH_LONG).show()
         }
         
         Looper.loop()

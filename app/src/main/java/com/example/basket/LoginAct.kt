@@ -1,12 +1,15 @@
 package com.example.basket
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.basket.databinding.ActivityLoginBinding
+import com.example.basket.models.UserModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -15,15 +18,17 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.installations.FirebaseInstallations
 
 class LoginAct : AppCompatActivity() {
     // Value default de google
     private val GOOGLE_SIGN_IN = 100
-
+    var tokenId = ""
     // Callback Manager de Facebook
     private val callbackManager = CallbackManager.Factory.create()
     // Binding
@@ -32,6 +37,7 @@ class LoginAct : AppCompatActivity() {
         // Binding
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // Splash
         Thread.sleep(2000)
@@ -46,9 +52,10 @@ class LoginAct : AppCompatActivity() {
     }
 
     private fun notificacion(){
-        FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener {
+       FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener {
             it.result?.token?.let {
                 println("Este el token del dispositivo ${it}")
+                tokenId = it
             }
         }
 
@@ -83,7 +90,7 @@ class LoginAct : AppCompatActivity() {
 
     private fun setup() {
         title = "Autenticación"
-        binding.RegisterButton.setOnClickListener{
+        /*binding.RegisterButton.setOnClickListener{
             if (binding.EmailEditText.text.isNotEmpty() && binding.PasswordEditText.text.isNotEmpty()) {
                 FirebaseAuth.getInstance()
                         .createUserWithEmailAndPassword(binding.EmailEditText.text.toString(),
@@ -112,7 +119,7 @@ class LoginAct : AppCompatActivity() {
                             }
                         }
             }
-        }
+        }*/
         // Boton Login Google
         binding.googleButton.setOnClickListener {
 
@@ -133,7 +140,7 @@ class LoginAct : AppCompatActivity() {
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
 
             LoginManager.getInstance().registerCallback(callbackManager,
-                object : FacebookCallback<LoginResult>{
+                object : FacebookCallback<LoginResult> {
 
                     override fun onSuccess(result: LoginResult?) {
 
@@ -143,15 +150,25 @@ class LoginAct : AppCompatActivity() {
 
                             val credential = FacebookAuthProvider.getCredential(token.token)
                             //Registramos la autenticación en Firebase
-                            FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                            FirebaseAuth.getInstance().signInWithCredential(credential)
+                                .addOnCompleteListener {
 
-                                if (it.isSuccessful){
-                                    showHome(it.result?.user?.email ?: "", ProviderType.FACEBOOK)
+                                    if (it.isSuccessful) {
+                                        val userEmail: String = it.result?.user?.email ?: ""
+                                        val userModel = UserModel(userEmail, tokenId)
+                                        FirebaseFirestore.getInstance().collection("users").document(userEmail)
+                                            .set(userModel).addOnSuccessListener {
+                                                Log.d(
+                                                    "TAG",
+                                                    "User successfully created!"
+                                                )
+                                            }
+                                        showHome(userEmail, ProviderType.FACEBOOK)
 
-                                } else {
-                                    showAlert()
+                                    } else {
+                                        showAlert()
+                                    }
                                 }
-                            }
                         }
                     }
 
@@ -166,13 +183,19 @@ class LoginAct : AppCompatActivity() {
                 })
 
         }
+        // Boton Login Email
+        binding.emailButton.setOnClickListener {
+            startActivity(Intent(this, EmailLogin::class.java))
+        }
     }
 
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage("Se ha producido un error autenticando al usuario")
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton("Aceptar"){ dialogInterface: DialogInterface, i: Int ->
+            dialogInterface.dismiss()
+        }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
@@ -226,7 +249,16 @@ class LoginAct : AppCompatActivity() {
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
 
                         if (it.isSuccessful){
-                            showHome(account.email ?: "", ProviderType.GOOGLE)
+                            val userEmail: String = account.email ?: ""
+                            val userModel = UserModel(userEmail, tokenId)
+                            FirebaseFirestore.getInstance().collection("users").document(userEmail)
+                                .set(userModel).addOnSuccessListener {
+                                    Log.d(
+                                        "TAG",
+                                        "User successfully created!"
+                                    )
+                                }
+                            showHome(userEmail, ProviderType.GOOGLE)
                         } else {
                             showAlert()
                         }

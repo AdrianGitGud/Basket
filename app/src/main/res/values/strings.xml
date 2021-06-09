@@ -3,7 +3,7 @@
     <string name="email" translatable="false">Email</string>
     <string name="contrase_a" translatable="false">Contraseña</string>
     <string name="registrate" translatable="false">Registrate</string>
-    <string name="acceder" translatable="false">Acceder</string>
+    <string name="accede" translatable="false">Accede</string>
     <string name="prefs_file" translatable="false">com.example.basket.PREFERENCE_FILE_KEY</string>
     <string name="ToS" translatable="false">1. Estos Términos y Condiciones de Uso regulan las reglas a que se sujeta la utilización de la APP BASKET (en adelante, la APP). La descarga o utilización de la APP atribuye la condición de
 Usuario a quien lo haga e implica la aceptación de todas las condiciones incluidas en este documento

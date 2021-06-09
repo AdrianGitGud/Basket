@@ -17,6 +17,7 @@ class CreateListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         // Binding
+
         binding = ActivityCreateListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -61,7 +62,7 @@ class CreateListActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val userEmail = prefs.getString("email", null)
 
-        var shoppingListId = userShoppingListsRef?.document()?.id
+        val shoppingListId = userShoppingListsRef?.document()?.id
         val shoppingListModel = ShoppingListModel(shoppingListId, shoppingListName, userEmail)
         if (shoppingListId != null) {
             userShoppingListsRef?.document(shoppingListId)
