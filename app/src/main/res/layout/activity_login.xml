@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@mipmap/fondo_leche"
     tools:context=".LoginAct">
 
     <LinearLayout
@@ -23,7 +23,31 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="400dp" />
+            android:layout_height="100dp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:src="@mipmap/logo_notext" />
+
+        <TextView
+            android:id="@+id/logoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="Fill the Basket"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:gravity="center_horizontal" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
 
         <Button
             android:id="@+id/googleButton"
@@ -80,22 +104,25 @@
             android:textColor="#272727"
             android:textSize="18sp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tduTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="Mediante el uso de Basket, usted acepta nuestras Condiciones de Uso y Política de Privacidad"
+            android:textColor="#65FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/tduTextView"
-        android:layout_width="374dp"
-        android:layout_height="35dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Mediante el uso de Basket, usted acepta nuestras Condiciones de Uso y Política de Privacidad"
-        android:textColor="#65FFFFFF"
-        android:textSize="12sp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authLayout"
-        app:layout_constraintVertical_bias="0.955" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

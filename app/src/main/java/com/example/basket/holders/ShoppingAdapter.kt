@@ -19,13 +19,16 @@ class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : Fi
 
     private var shoppingListName : String? = null
     private var shoppingListId : String? = null
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(
-                    R.layout.item_shopping_list,
-                    parent, false
+                        R.layout.item_shopping_list,
+                        parent, false
                 )
+
 
         itemView.setOnClickListener {
             var listIntent = Intent(parent.context, ShoppingListActivity::class.java).apply{
@@ -66,15 +69,15 @@ class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : Fi
         val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
         val shoppingListCreationDate: String = dateFormat.format(model.date)
         holder.dateTextView.text = "Creada: $shoppingListCreationDate"
-        shoppingListName = model.shoppingListName.toString()
-        shoppingListId = model.shoppingListId.toString()
-
+        holder.shoppingListNameTextView.tag = shoppingListName
     }
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val shoppingListNameTextView: TextView = itemView.findViewById(R.id.shopping_list_name_text_view)
         val createdByTextView:TextView = itemView.findViewById(R.id.created_by_text_view)
         val dateTextView:TextView = itemView.findViewById(R.id.date_text_view)
+
     }
 
     /*fun setShoppingList(context: Context, userEmail: String?, shoppingListModel: ShoppingListModel, itemView: View): MyViewHolder {

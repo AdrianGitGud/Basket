@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/buttons_shape"
+    android:backgroundTint="@color/colorPrimaryDark">
 
     <TextView
         android:id="@+id/shopping_list_name_text_view"
@@ -46,8 +47,10 @@
         tools:text="Jun 6, 2021"/>
     <View
         android:layout_width="match_parent"
+        android:id="@+id/view"
         android:layout_height="2dp"
         android:layout_below="@id/created_by_text_view"
         android:layout_margin="8sp"
         android:background = "@color/colorAccent"/>
+
 </RelativeLayout>
