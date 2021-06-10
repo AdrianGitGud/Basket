@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ShoppingListActivity"></activity>
         <activity android:name=".EmailLogin" />
         <activity android:name=".CreateListActivity" />
         <activity android:name=".ListActivity" />

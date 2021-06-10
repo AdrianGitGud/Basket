@@ -1,30 +1,73 @@
 package com.example.basket.holders
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.basket.Lists
 import com.example.basket.R
+import com.example.basket.ShoppingListActivity
+import com.example.basket.models.ShoppingListModel
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ShoppingAdapter(options: FirestoreRecyclerOptions<Lists>) : FirestoreRecyclerAdapter<Lists, ShoppingAdapter.MyViewHolder>(options){
+class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : FirestoreRecyclerAdapter<ShoppingListModel, ShoppingAdapter.MyViewHolder>(options){
+
+    private var shoppingListName : String? = null
+    private var shoppingListId : String? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_shopping_list,
-                        parent, false)
+                .inflate(
+                    R.layout.item_shopping_list,
+                    parent, false
+                )
+
+        itemView.setOnClickListener {
+            var listIntent = Intent(parent.context, ShoppingListActivity::class.java).apply{
+                putExtra("name", shoppingListName)
+            }
+            parent.context.startActivity(listIntent)
+        }
+        /*itemView.setOnLongClickListener {
+            val builder = AlertDialog.Builder(parent.context)
+            builder.setTitle("Edit Shopping List Name")
+            val editText = EditText(parent.context)
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
+            editText.setText(shoppingListName)
+            editText.setSelection(editText.text.length)
+            editText.hint = "Type a name"
+            editText.setHintTextColor(Color.GRAY)
+            builder.setView(editText)
+            val rootRef = FirebaseFirestore.getInstance()
+            val map: MutableMap<String, Any> = HashMap()
+            builder.setPositiveButton("Actualizar") { dialogInterface, i ->
+                val newShoppingListName = editText.text.toString().trim { it <= ' ' }
+                map["shoppingListName"] = newShoppingListName
+                rootRef.collection("shoppingLists").document(userEmail!!).collection("userShoppingLists").document(shoppingListId).update(map)
+            }
+            builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.show()
+            true
+        }*/
 
         return MyViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: Lists) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: ShoppingListModel) {
 
         holder.shoppingListNameTextView.text = model.shoppingListName
         holder.createdByTextView.text = model.createdBy
-        holder.dateTextView.text = model.date.toString()
+        val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
+        val shoppingListCreationDate: String = dateFormat.format(model.date)
+        holder.dateTextView.text = "Creada: $shoppingListCreationDate"
+        shoppingListName = model.shoppingListName.toString()
+        shoppingListId = model.shoppingListId.toString()
 
     }
 

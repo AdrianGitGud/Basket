@@ -39,6 +39,7 @@ class CreateListActivity : AppCompatActivity() {
                 addShoppingList(shoppingListName)
                 startActivity(Intent(this, ListActivity::class.java))
             }
+            finish()
         }
 
         binding.closeButton.setOnClickListener {

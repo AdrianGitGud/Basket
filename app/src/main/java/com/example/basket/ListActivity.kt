@@ -2,16 +2,13 @@ package com.example.basket
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.basket.databinding.ActivityListBinding
 import com.example.basket.holders.ShoppingAdapter
+import com.example.basket.models.ShoppingListModel
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -46,10 +43,10 @@ class ListActivity : AppCompatActivity() {
 
         val collectionReference: CollectionReference = FirebaseFirestore.getInstance().collection("shoppingLists").document(userEmail.toString()).collection("userShoppingLists")
 
-        val query:Query = collectionReference
+        val query:Query = collectionReference.orderBy("date", Query.Direction.DESCENDING)
 
-        val options: FirestoreRecyclerOptions<Lists> = FirestoreRecyclerOptions.Builder<Lists>()
-                .setQuery(query, Lists::class.java)
+        val options: FirestoreRecyclerOptions<ShoppingListModel> = FirestoreRecyclerOptions.Builder<ShoppingListModel>()
+                .setQuery(query, ShoppingListModel::class.java)
                 .build()
 
         shoppingAdapter = ShoppingAdapter(options)
@@ -57,7 +54,6 @@ class ListActivity : AppCompatActivity() {
         val recyclerView = binding.listsRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = shoppingAdapter
-
 
     }
 
