@@ -49,7 +49,6 @@ class HomeActivity : AppCompatActivity() {
         binding.listButton.setOnClickListener {
             val listIntent = Intent(this, ListActivity::class.java).apply {
                 putExtra("email", email)
-                putExtra("provider", provider)
             }
             startActivity(listIntent)
         }

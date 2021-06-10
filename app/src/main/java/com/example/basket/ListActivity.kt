@@ -2,22 +2,26 @@ package com.example.basket
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.basket.databinding.ActivityListBinding
-import com.example.basket.models.ShoppingListModel
+import com.example.basket.holders.ShoppingAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 
 class ListActivity : AppCompatActivity() {
+
+    var shoppingAdapter: ShoppingAdapter? = null
     // Binding
-    private lateinit var newArrayList: ArrayList<Lists>
-    lateinit var shoppingListName: Array<String>
-    lateinit var createdBy: Array<String>
-    lateinit var date: Array<String>
     private lateinit var binding: ActivityListBinding
+    //var progressBar = binding.progressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         // Binding
         binding = ActivityListBinding.inflate(layoutInflater)
@@ -25,30 +29,46 @@ class ListActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        binding.fabAddlist.setOnClickListener {
+            val listIntent = Intent(this, CreateListActivity::class.java)
+            startActivity(listIntent)
+        }
+
+        setUpRecyclerView()
+    }
+
+
+    private fun setUpRecyclerView() {
+
         val bundle =  intent.extras
         val userEmail = bundle?.getString("email")
-        val provider = bundle?.getString("provider")
 
-        binding.fabAddlist.setOnClickListener {
-            val profileIntent = Intent(this, CreateListActivity::class.java).apply {
-                putExtra("provider", provider)
-            }
-            startActivity(profileIntent)
-        }
-        var userShoppingListsRef = FirebaseFirestore.getInstance().collection("shoppingLists").document(
-            userEmail.toString()
-        ).collection("userShoppingLists")
 
-        var recyclerView = binding.listsReciclerView
+        val collectionReference: CollectionReference = FirebaseFirestore.getInstance().collection("shoppingLists").document(userEmail.toString()).collection("userShoppingLists")
+
+        val query:Query = collectionReference
+
+        val options: FirestoreRecyclerOptions<Lists> = FirestoreRecyclerOptions.Builder<Lists>()
+                .setQuery(query, Lists::class.java)
+                .build()
+
+        shoppingAdapter = ShoppingAdapter(options)
+
+        val recyclerView = binding.listsRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = shoppingAdapter
 
-        var query:Query = userShoppingListsRef.orderBy(
-            "shoppingListsName",
-            Query.Direction.ASCENDING
-        )
 
-        val firestoreRecyclerOptions = FirestoreRecyclerOptions.Builder<ShoppingListModel>()
-            .setQuery(query, ShoppingListModel::class.java)
-            .build()
     }
+
+    override fun onStart() {
+        super.onStart()
+        shoppingAdapter!!.startListening()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        shoppingAdapter!!.stopListening()
+    }
+
 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <TextView
         android:id="@+id/shopping_list_name_text_view"
@@ -44,7 +44,7 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         tools:text="Jun 6, 2021"/>
-    <view
+    <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/created_by_text_view"
