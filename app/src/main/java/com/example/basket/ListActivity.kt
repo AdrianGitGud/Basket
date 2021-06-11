@@ -13,10 +13,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 
-class ListActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
 
     var shoppingAdapter: ShoppingAdapter? = null
-    // Binding
+    val options: FirestoreRecyclerOptions<ShoppingListModel>? = null
+            // Binding
     private lateinit var binding: ActivityListBinding
     //var progressBar = binding.progressBar
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +35,11 @@ class ListActivity : AppCompatActivity() {
         setUpRecyclerView()
     }
 
+    override fun onItemClick(position: Int) {
+        val productsIntent = Intent(this, ShoppingListActivity::class.java).apply {
+        }
+        startActivity(productsIntent)
+    }
 
     private fun setUpRecyclerView() {
 
@@ -49,7 +55,7 @@ class ListActivity : AppCompatActivity() {
                 .setQuery(query, ShoppingListModel::class.java)
                 .build()
 
-        shoppingAdapter = ShoppingAdapter(options)
+        shoppingAdapter = ShoppingAdapter(options, this)
 
         val recyclerView = binding.listsRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)

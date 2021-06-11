@@ -15,10 +15,10 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : FirestoreRecyclerAdapter<ShoppingListModel, ShoppingAdapter.MyViewHolder>(options){
-
-    private var shoppingListName : String? = null
-    private var shoppingListId : String? = null
+class ShoppingAdapter(
+        options: FirestoreRecyclerOptions<ShoppingListModel>,
+        private val listener: OnItemClickListener
+) : FirestoreRecyclerAdapter<ShoppingListModel, ShoppingAdapter.MyViewHolder>(options){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,12 +30,6 @@ class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : Fi
                 )
 
 
-        itemView.setOnClickListener {
-            var listIntent = Intent(parent.context, ShoppingListActivity::class.java).apply{
-                putExtra("name", shoppingListName)
-            }
-            parent.context.startActivity(listIntent)
-        }
         /*itemView.setOnLongClickListener {
             val builder = AlertDialog.Builder(parent.context)
             builder.setTitle("Edit Shopping List Name")
@@ -69,16 +63,34 @@ class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : Fi
         val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
         val shoppingListCreationDate: String = dateFormat.format(model.date)
         holder.dateTextView.text = "Creada: $shoppingListCreationDate"
-        holder.shoppingListNameTextView.tag = shoppingListName
     }
 
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val shoppingListNameTextView: TextView = itemView.findViewById(R.id.shopping_list_name_text_view)
         val createdByTextView:TextView = itemView.findViewById(R.id.created_by_text_view)
         val dateTextView:TextView = itemView.findViewById(R.id.date_text_view)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+}
+
+
 
     /*fun setShoppingList(context: Context, userEmail: String?, shoppingListModel: ShoppingListModel, itemView: View): MyViewHolder {
         val shoppingListId: String? = shoppingListModel.shoppingListId
@@ -123,4 +135,3 @@ class ShoppingAdapter(options: FirestoreRecyclerOptions<ShoppingListModel>) : Fi
             true
         }
     }*/
-}

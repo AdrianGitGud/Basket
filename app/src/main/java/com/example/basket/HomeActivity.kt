@@ -52,6 +52,13 @@ class HomeActivity : AppCompatActivity() {
             }
             startActivity(listIntent)
         }
+
+        binding.recipesButton.setOnClickListener {
+            val recipeIntent = Intent(this, RecipesActivity::class.java).apply {
+                putExtra("email", email)
+            }
+            startActivity(recipeIntent)
+        }
     }
 
     private fun setup(){
