@@ -2,6 +2,7 @@ package com.example.basket
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.basket.databinding.ActivityListBinding
@@ -35,8 +36,11 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
         setUpRecyclerView()
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence) {
+        Toast.makeText(this,id, Toast.LENGTH_SHORT).show()
         val productsIntent = Intent(this, ShoppingListActivity::class.java).apply {
+            putExtra("Name", shoppingListNameTextView)
+            putExtra("Id", id)
         }
         startActivity(productsIntent)
     }
@@ -45,7 +49,6 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
 
         val bundle =  intent.extras
         val userEmail = bundle?.getString("email")
-
 
         val collectionReference: CollectionReference = FirebaseFirestore.getInstance().collection("shoppingLists").document(userEmail.toString()).collection("userShoppingLists")
 
