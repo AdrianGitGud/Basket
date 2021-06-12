@@ -1,25 +1,49 @@
-/*package com.example.basket.holders
+package com.example.basket.holders
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.basket.R
 import com.example.basket.models.ProductModel
-import com.facebook.appevents.suggestedevents.ViewOnClickListener
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class ProductAdapter(private val items: ArrayList<ProductModel>): RecyclerView.Adapter<ProductAdapter.ItemHolder>() {
+class ProductAdapter(
+        options: FirestoreRecyclerOptions<ProductModel>,
+) : FirestoreRecyclerAdapter<ProductModel, ProductAdapter.MyViewHolder>(options){
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductAdapter.ItemHolder {
-        TODO("Not yet implemented")
+        val itemView = LayoutInflater.from(parent.context)
+                .inflate(
+                        R.layout.item_product,
+                        parent, false
+                )
+
+        return MyViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ProductAdapter.ItemHolder, position: Int) {
-        TODO("Not yet implemented")
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: ProductModel) {
+
+        holder.productName.text = model.productName
+
     }
 
-    override fun getItemCount() = items.size
-
-    class ItemHolder(v:View): RecyclerView.ViewHolder(v), ViewOnClickListener {
-        private var view: View = v
+    fun deleteItem(position: Int) {
+        snapshots.getSnapshot(position).reference.delete()
+        notifyItemChanged(position)
     }
-}*/
+
+    fun editItem(position: Int, map: MutableMap<String, Any>){
+        snapshots.getSnapshot(position).reference.update(map)
+        notifyItemChanged(position)
+
+    }
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val productName: TextView = itemView.findViewById(R.id.productTextView)
+
+    }
+}

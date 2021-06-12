@@ -5,13 +5,13 @@ class ProductModel {
         private set
     var productName: String? = null
         private set
-    var izInShoppingList: Boolean? = null
+    var shoppingListId: String? = null
         private set
 
     constructor() {}
-    constructor(productId: String?, productName: String?, izInShoppingList: Boolean?) {
+    constructor(productId: String?, productName: String?, shoppingListId: String?) {
         this.productId = productId
         this.productName = productName
-        this.izInShoppingList = izInShoppingList
+        this.shoppingListId = shoppingListId
     }
 }

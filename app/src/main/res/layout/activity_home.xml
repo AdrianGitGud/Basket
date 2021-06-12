@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@mipmap/fondo_leche_pintado"
     tools:context=".HomeActivity">
 
     <LinearLayout
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/profileButton"
+            android:id="@+id/listButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -30,7 +30,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/colorAccent"
-            android:text="Perfil" />
+            android:text="Listas" />
 
         <Button
             android:id="@+id/recipesButton"
@@ -45,7 +45,7 @@
             android:text="Recetas" />
 
         <Button
-            android:id="@+id/listButton"
+            android:id="@+id/profileButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -54,13 +54,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/colorAccent"
-            android:text="Listas" />
+            android:text="Perfil" />
 
-        <TextView
-            android:id="@+id/userTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

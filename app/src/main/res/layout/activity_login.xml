@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/fondo_leche"
+    android:background="@mipmap/fondo_leche_pintado"
     tools:context=".LoginAct">
 
     <LinearLayout

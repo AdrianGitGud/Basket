@@ -31,7 +31,8 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat"
         android:text="Crear una lista"
-        android:textColor="#FFFFFF"
+        android:textColorHighlight="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/closeButton"
@@ -46,6 +47,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/buttons_shape"
         android:backgroundTint="@color/colorAccent"
         android:fontFamily="@font/montserrat"
@@ -54,6 +56,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/crearListaTextView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -65,196 +68,187 @@
         android:backgroundTint="@color/colorAccent"
         android:fontFamily="@font/montserrat"
         android:hint="Nombre de la lista"
+        android:paddingStart="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="2dp"
-        android:textColorHint="#A3A3A3"
         android:textColor="#FFFFFF"
+        android:textColorHint="#A3A3A3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.122"
-        tools:layout_editor_absoluteX="88dp"
-        android:paddingStart="20dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="32dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText">
+        tools:layout_editor_absoluteX="88dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputEditText">
 
-            <ImageButton
-                android:id="@+id/backgroundButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/backgroundButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
+                <ToggleButton
+                    android:id="@+id/azulBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/azul"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+                <ToggleButton
+                    android:id="@+id/moradoBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/morado"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/verdeBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/verde"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+                <ToggleButton
+                    android:id="@+id/naranjaBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/naranja"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/amarilloBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/amarillo"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+                <ToggleButton
+                    android:id="@+id/violetaBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/violeta"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50dp"
+                    app:singleSelection="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/rosaBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rosa"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+                <ToggleButton
+                    android:id="@+id/redBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rojo"
+                    android:textColor="@android:color/white"
+                    android:textOff=""
+                    android:textOn="✓"
+                    android:textSize="50sp"
+                    app:singleSelection="true" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/backgroundButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/backgroundButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:layout_marginStart="5dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/backgroundButton5"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/backgroundButton6"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:layout_marginStart="5dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/backgroundButton7"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/backgroundButton8"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:layout_marginStart="5dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/backgroundButton9"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageButton
-                android:id="@+id/backgroundButton10"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/buttons_shape"
-                android:backgroundTint="@color/colorAccent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:layout_marginStart="5dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

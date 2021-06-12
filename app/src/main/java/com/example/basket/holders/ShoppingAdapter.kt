@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ShoppingAdapter(
-         options: FirestoreRecyclerOptions<ShoppingListModel>,
+        options: FirestoreRecyclerOptions<ShoppingListModel>,
         private val listener: OnItemClickListener
 ) : FirestoreRecyclerAdapter<ShoppingListModel, ShoppingAdapter.MyViewHolder>(options){
 
@@ -25,30 +25,6 @@ class ShoppingAdapter(
                         R.layout.item_shopping_list,
                         parent, false
                 )
-
-
-        /*itemView.setOnLongClickListener {
-            val builder = AlertDialog.Builder(parent.context)
-            builder.setTitle("Edit Shopping List Name")
-            val editText = EditText(parent.context)
-            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
-            editText.setText(shoppingListName)
-            editText.setSelection(editText.text.length)
-            editText.hint = "Type a name"
-            editText.setHintTextColor(Color.GRAY)
-            builder.setView(editText)
-            val rootRef = FirebaseFirestore.getInstance()
-            val map: MutableMap<String, Any> = HashMap()
-            builder.setPositiveButton("Actualizar") { dialogInterface, i ->
-                val newShoppingListName = editText.text.toString().trim { it <= ' ' }
-                map["shoppingListName"] = newShoppingListName
-                rootRef.collection("shoppingLists").document(userEmail!!).collection("userShoppingLists").document(shoppingListId).update(map)
-            }
-            builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
-            val alertDialog: AlertDialog = builder.create()
-            alertDialog.show()
-            true
-        }*/
 
         return MyViewHolder(itemView)
     }
@@ -61,10 +37,17 @@ class ShoppingAdapter(
         val shoppingListCreationDate: String = dateFormat.format(model.date)
         holder.dateTextView.text = "Creada: $shoppingListCreationDate"
         holder.idTextView.text = model.shoppingListId
-
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    fun deleteItem(position: Int) {
+        snapshots.getSnapshot(position).reference.delete()
+    }
+
+    fun editItem(position: Int, map: MutableMap<String, Any>){
+        snapshots.getSnapshot(position).reference.update(map)
+    }
+
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
         val shoppingListNameTextView: TextView = itemView.findViewById(R.id.shopping_list_name_text_view)
         val createdByTextView:TextView = itemView.findViewById(R.id.created_by_text_view)
         val dateTextView:TextView = itemView.findViewById(R.id.date_text_view)
@@ -72,18 +55,30 @@ class ShoppingAdapter(
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position, idTextView.text,shoppingListNameTextView.text)
+                listener.onItemClick(position, idTextView.text, shoppingListNameTextView.text)
             }
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemHold(position, idTextView.text, shoppingListNameTextView.text, createdByTextView.text)
+            }
+            return true
         }
     }
 
     interface OnItemClickListener {
+
         fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence)
+        fun onItemHold(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence)
     }
 
 }

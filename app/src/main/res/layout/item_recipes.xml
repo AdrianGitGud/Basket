@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/buttons_shape"
-    android:backgroundTint="@color/colorPrimaryDark">
+    android:background="@drawable/list_shape">
 
     <TextView
         android:id="@+id/recipeTitulo"
@@ -49,7 +48,7 @@
         android:layout_width="match_parent"
         android:id="@+id/view"
         android:layout_height="2dp"
-        android:layout_below="@id/created_by_text_view"
+        android:layout_below="@id/recipeDescripcion"
         android:layout_margin="8sp"
         android:background = "@color/colorAccent"/>
 

@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/buttons_shape"
-    android:backgroundTint="@color/colorPrimaryDark">
+    android:background="@drawable/list_shape">
 
     <TextView
         android:id="@+id/shopping_list_name_text_view"
@@ -51,7 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        tools:visibility="invisible" />
+        android:textColor="@color/colorPrimaryDark"
+        tools:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

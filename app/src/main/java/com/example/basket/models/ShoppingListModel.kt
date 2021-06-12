@@ -15,6 +15,7 @@ class ShoppingListModel : Serializable {
     @ServerTimestamp
     val date: Date? = null
 
+
     constructor() {}
     constructor(shoppingListId: String?, shoppingListName: String?, createdBy: String?) {
         this.shoppingListId = shoppingListId
