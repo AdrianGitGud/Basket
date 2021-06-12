@@ -8,7 +8,10 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
 import com.example.basket.databinding.ActivityLoginBinding
+import com.example.basket.holders.PagerAdapter
+import com.example.basket.models.OnBoardingData
 import com.example.basket.models.UserModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -18,6 +21,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -26,6 +30,10 @@ import com.google.firebase.installations.FirebaseInstallations
 
 class LoginAct : AppCompatActivity() {
     // Value default de google
+
+    var pagerAdapter: PagerAdapter?= null
+    var tabLayout: TabLayout?= null
+    var onBoarding: ViewPager?= null
     private val GOOGLE_SIGN_IN = 100
     var tokenId = ""
     // Callback Manager de Facebook
@@ -48,6 +56,17 @@ class LoginAct : AppCompatActivity() {
         notificacion()
         setup()
         session()
+        tabLayout = findViewById(R.id.tab_indicator)
+
+        //val onBoardingData:MutableList<onBoardingData> = ArrayList()
+    }
+
+    private fun setOnBoardingPager (onBoardingData: List<OnBoardingData>){
+
+        onBoarding = findViewById(R.id.viewPager)
+        pagerAdapter = PagerAdapter(this, onBoardingData)
+        onBoarding!!.adapter= pagerAdapter
+        tabLayout?.setupWithViewPager(onBoarding)
     }
 
     private fun notificacion(){

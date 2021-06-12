@@ -116,7 +116,7 @@
             android:fontFamily="@font/montserrat"
             android:gravity="center"
             android:text="Mediante el uso de Basket, usted acepta nuestras Condiciones de Uso y Política de Privacidad"
-            android:textColor="#65FFFFFF"
+            android:textColor="#B4000000"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

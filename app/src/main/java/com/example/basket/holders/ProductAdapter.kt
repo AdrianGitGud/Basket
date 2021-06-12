@@ -33,13 +33,10 @@ class ProductAdapter(
 
     fun deleteItem(position: Int) {
         snapshots.getSnapshot(position).reference.delete()
-        notifyItemChanged(position)
     }
 
     fun editItem(position: Int, map: MutableMap<String, Any>){
         snapshots.getSnapshot(position).reference.update(map)
-        notifyItemChanged(position)
-
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

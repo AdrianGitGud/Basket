@@ -25,6 +25,7 @@ class ProfileActivity : AppCompatActivity() {
         logout()
         //var mdecorView = window.decorView; <-------- Mirar mas adelante
 
+
     }
 
     private fun info() {

@@ -153,10 +153,10 @@ class ShoppingListActivity : AppCompatActivity() {
                     val newProductName = editText.text.toString().trim { it <= ' ' }
                     if (newProductName.isBlank()){
                         editText.error = "Debes ingresar un nombre"
-                    } else {
+                        return@setPositiveButton
+                    }
                         map["productName"] = newProductName
                         productAdapter!!.editItem(viewHolder.adapterPosition, map)
-                    }
                 }
                 builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
                 val alertDialog: AlertDialog = builder.create()
