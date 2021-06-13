@@ -16,6 +16,7 @@ class RecipeModel {
     @ServerTimestamp
     val date: Date? = null
 
+    constructor() {}
     constructor(recipeId: String?, recipeName: String?, recipeDesc: String?, recipeIngredientes: String?) {
         this.recipeId = recipeId
         this.recipeName = recipeName

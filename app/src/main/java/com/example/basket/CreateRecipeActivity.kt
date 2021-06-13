@@ -1,6 +1,7 @@
 package com.example.basket
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -51,7 +52,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                 val recipeIngredientes = binding.crearRecipeIngredientes.text.toString()
                 addRecipe(recipeDesc, recipeIngredientes, recipeName)
                 //upLoadToFirebase(imageUri!!)
-                onBackPressed()
+                startActivity(Intent(this, RecipesActivity::class.java))
 
             } else {
 

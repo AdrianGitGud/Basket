@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RecipeAdapter(
-        options: FirestoreRecyclerOptions<RecipeModel>,
+    options: FirestoreRecyclerOptions<RecipeModel>,
 ) : FirestoreRecyclerAdapter<RecipeModel, RecipeAdapter.MyViewHolder>(options){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,11 +30,11 @@ class RecipeAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: RecipeModel) {
 
-        holder.recipeTitulo.text = model.recipeName
+        holder.recipeName.text = model.recipeName
         holder.recipeDesc.text = model.recipeDesc
         val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
-        val shoppingListCreationDate: String = dateFormat.format(model.date)
-        holder.dateTextView.text = "Creada: $shoppingListCreationDate"
+        val recipeCreationDate: String = dateFormat.format(model.date)
+        holder.dateTextView.text = "Creada: $recipeCreationDate"
         holder.recipeIngredientes.text = model.recipeIngredientes
     }
 
@@ -43,13 +43,8 @@ class RecipeAdapter(
         notifyDataSetChanged()
     }
 
-    fun editItem(position: Int, map: MutableMap<String, Any>){
-        snapshots.getSnapshot(position).reference.update(map)
-        notifyDataSetChanged()
-    }
-
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val recipeTitulo: TextView = itemView.findViewById(R.id.recipeTitulo)
+        val recipeName: TextView = itemView.findViewById(R.id.recipeTitulo)
         val recipeDesc:TextView = itemView.findViewById(R.id.recipeDescripcion)
         val recipeIngredientes:TextView = itemView.findViewById(R.id.recipeIngredientes)
         val dateTextView: TextView = itemView.findViewById(R.id.recetaFechaCreacion)
