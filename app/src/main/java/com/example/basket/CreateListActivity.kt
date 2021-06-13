@@ -32,16 +32,16 @@ class CreateListActivity : AppCompatActivity() {
         userShoppingList()
 
         binding.siguienteButton.setOnClickListener {
-            val msg: String = binding.textInputEditText.text.toString()
+            val msg: String = binding.crearListaNombre.text.toString()
             if (msg.trim().isNotEmpty()) {
 
-                val shoppingListName = binding.textInputEditText.text.toString()
+                val shoppingListName = binding.crearListaNombre.text.toString()
                 addShoppingList(shoppingListName)
-                onBackPressed()
+                startActivity(Intent(this, ListActivity::class.java))
 
             } else {
 
-                binding.textInputEditText.error = "Debes ponerle un nombre a la lista"
+                binding.crearListaNombre.error = "Debes ponerle un nombre a la lista"
 
             }
         }

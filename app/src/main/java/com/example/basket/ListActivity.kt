@@ -131,9 +131,9 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
                         editText.error = "Debes ingresar un nombre"
                         return@setPositiveButton
                     }
-                        map["shoppingListName"] = newShoppingListName
-                        shoppingAdapter!!.editItem(viewHolder.adapterPosition, map)
-            }
+                    map["shoppingListName"] = newShoppingListName
+                    shoppingAdapter!!.editItem(viewHolder.adapterPosition, map)
+                }
                 builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
                 val alertDialog: AlertDialog = builder.create()
                 alertDialog.show()

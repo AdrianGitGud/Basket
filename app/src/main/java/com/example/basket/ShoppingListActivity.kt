@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.basket.databinding.ActivityShoppingListBinding
 import com.example.basket.holders.ProductAdapter
-import com.example.basket.holders.ShoppingAdapter
 import com.example.basket.models.ProductModel
-import com.example.basket.models.ShoppingListModel
 import com.example.basket.utils.SpacingItemDecorator
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
@@ -128,7 +126,6 @@ class ShoppingListActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 productAdapter!!.deleteItem(viewHolder.adapterPosition)
-
             }
         }).attachToRecyclerView(recyclerView)
 
@@ -149,14 +146,13 @@ class ShoppingListActivity : AppCompatActivity() {
                 builder.setView(editText)
                 val map: MutableMap<String, Any> = HashMap()
                 builder.setPositiveButton("Actualizar") { dialogInterface, i ->
-
                     val newProductName = editText.text.toString().trim { it <= ' ' }
-                    if (newProductName.isBlank()){
+                    if (newProductName.isBlank()) {
                         editText.error = "Debes ingresar un nombre"
                         return@setPositiveButton
                     }
-                        map["productName"] = newProductName
-                        productAdapter!!.editItem(viewHolder.adapterPosition, map)
+                    map["productName"] = newProductName
+                    productAdapter!!.editItem(viewHolder.adapterPosition, map)
                 }
                 builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
                 val alertDialog: AlertDialog = builder.create()

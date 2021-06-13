@@ -5,6 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/list_shape">
 
+    <ImageView
+        android:id="@+id/recipeImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/recipeTitulo"
         android:layout_width="wrap_content"
@@ -12,10 +18,11 @@
         android:layout_marginStart="8sp"
         android:layout_marginTop="8sp"
         android:layout_marginEnd="8sp"
+        android:layout_below="@+id/recipeImageView"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/colorAccent"
         android:textSize="25sp"
-        tools:text="Compras" />
+        tools:text="Paella" />
 
     <TextView
         android:id="@+id/recipeDescripcion"
@@ -28,13 +35,12 @@
         android:fontFamily="@font/montserrat"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
-        tools:text="Created by: First User" />
+        tools:text="La paella, o también arroz a la paella, es una receta de cocina con base de arroz, con origen en la actual Comunidad Valenciana, hoy en día muy popular en toda España y también en Argentina." />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/recipeIngredientes"
-        android:layout_below="@+id/shopping_list_name_text_view"
+        android:id="@+id/recetaFechaCreacion"
         android:layout_marginEnd="8sp"
         android:layout_marginRight="8sp"
         android:layout_marginTop="25sp"
@@ -44,11 +50,45 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         tools:text="Jun 6, 2021"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:id="@+id/view2"
+        android:layout_height="2dp"
+        android:layout_below="@id/recipeDescripcion"
+        android:layout_margin="8sp"
+        android:background = "@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/recipeIngredientesTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view2"
+        android:layout_marginStart="8sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="22sp"
+        android:text="Ingredientes:" />
+
+    <TextView
+        android:id="@+id/recipeIngredientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipeIngredientesTitulo"
+        android:layout_marginStart="8sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        tools:text="Agua, aceite de oliva, arroz redondo, azafrán, conejo, garrofón, ferraura, pollo, sal, tomate." />
     <View
         android:layout_width="match_parent"
         android:id="@+id/view"
         android:layout_height="2dp"
-        android:layout_below="@id/recipeDescripcion"
+        android:layout_below="@id/recipeIngredientes"
         android:layout_margin="8sp"
         android:background = "@color/colorAccent"/>
 

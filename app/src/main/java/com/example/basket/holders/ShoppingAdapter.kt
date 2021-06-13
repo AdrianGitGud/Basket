@@ -41,10 +41,12 @@ class ShoppingAdapter(
 
     fun deleteItem(position: Int) {
         snapshots.getSnapshot(position).reference.delete()
+        notifyDataSetChanged()
     }
 
     fun editItem(position: Int, map: MutableMap<String, Any>){
         snapshots.getSnapshot(position).reference.update(map)
+        notifyDataSetChanged()
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
@@ -80,5 +82,4 @@ class ShoppingAdapter(
         fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence)
         fun onItemHold(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence)
     }
-
 }
