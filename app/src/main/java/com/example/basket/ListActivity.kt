@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +24,7 @@ import com.google.firebase.firestore.Query
 
 
 class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
-    private lateinit var deletedList: String
+    private lateinit var friendEmail: String
     var shoppingAdapter: ShoppingAdapter? = null
     val options: FirestoreRecyclerOptions<ShoppingListModel>? = null
             // Binding
@@ -40,36 +43,53 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
         binding.fabAddlist.setOnClickListener {
             val listIntent = Intent(this, CreateListActivity::class.java)
             startActivity(listIntent)
-            finish()
         }
 
         setUpRecyclerView()
     }
 
-    override fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence) {
+    override fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence) {
         val productsIntent = Intent(this, ShoppingListActivity::class.java).apply {
             putExtra("Name", shoppingListNameTextView)
             putExtra("Id", id)
+            putExtra("Owner", createdByTextView)
         }
         startActivity(productsIntent)
     }
 
     override fun onItemHold(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence) {
+
+        val bundle =  intent.extras
+        val userEmail = bundle?.getString("email")
+        val shoppingListModel = ShoppingListModel(id.toString(), shoppingListNameTextView.toString(), userEmail)
+
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Editar nombre de la lista")
+        builder.setTitle("Comparte esta lista")
         val editText = EditText(this)
         editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
         editText.setText(shoppingListNameTextView)
         editText.setSelection(editText.text.length)
-        editText.hint = "Escribe un nombre"
+        editText.hint = "Escribe el email de tu amigo"
         editText.setHintTextColor(Color.GRAY)
         builder.setView(editText)
         val rootRef = FirebaseFirestore.getInstance()
-        val map: MutableMap<String, Any> = HashMap()
-        builder.setPositiveButton("Actualizar") { dialogInterface, i ->
-            val newShoppingListName = editText.text.toString().trim { it <= ' ' }
-            map["shoppingListName"] = newShoppingListName
-            rootRef.collection("shoppingLists").document(createdByTextView!! as String).collection("userShoppingLists").document(id as String).update(map)
+        builder.setPositiveButton("Aceptar") { dialogInterface, i ->
+            friendEmail = editText.text.toString().trim { it <= ' ' }
+            rootRef.collection("shoppingLists").document(friendEmail)
+                    .collection("userShoppingLists").document(id as String)
+                    .set(shoppingListModel).addOnSuccessListener {
+                        val users: HashMap<String, Any> = HashMap()
+                        val map: MutableMap<String, Any> = java.util.HashMap()
+                        map[userEmail!!] = true
+                        map[friendEmail] = true
+                        users["users"] = map
+                        rootRef.collection("shoppingLists").document(userEmail)
+                                .collection("userShoppingLists").document(id)
+                                .update(users)
+                        rootRef.collection("shoppingLists").document(friendEmail)
+                                .collection("userShoppingLists").document(id)
+                                .update(users)
+                    }
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
         val alertDialog: AlertDialog = builder.create()
@@ -96,7 +116,7 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
         val decorator: SpacingItemDecorator = SpacingItemDecorator(20)
         recyclerView.addItemDecoration(decorator)
         recyclerView.adapter = shoppingAdapter
-
+        
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -127,7 +147,7 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
                 val map: MutableMap<String, Any> = HashMap()
                 builder.setPositiveButton("Actualizar") { dialogInterface, i ->
                     val newShoppingListName = editText.text.toString().trim { it <= ' ' }
-                    if (newShoppingListName.isBlank()){
+                    if (newShoppingListName.isBlank()) {
                         editText.error = "Debes ingresar un nombre"
                         return@setPositiveButton
                     }

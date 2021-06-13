@@ -32,8 +32,6 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         binding.crearRecetaImagen.setOnClickListener {
 
-
-
         }
 
         binding.closeButton.setOnClickListener {
@@ -53,6 +51,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                 addRecipe(recipeDesc, recipeIngredientes, recipeName)
                 //upLoadToFirebase(imageUri!!)
                 startActivity(Intent(this, RecipesActivity::class.java))
+                finish()
 
             } else {
 
@@ -91,7 +90,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     private fun uploadPhoto(){
 
         var photoIntent = Intent()
-        photoIntent.type = "image/*"
+        photoIntent.type = "image"
         photoIntent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(photoIntent, 1)
 
@@ -106,21 +105,18 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         }
     }
-*/*/
+*/
     private fun userRecipes(){
-
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val userEmail = prefs.getString("email", null)
 
         userRecipesRef = FirebaseFirestore.getInstance()
             .collection("recipes")
-            .document(userEmail.toString()).collection("userRecipes")
     }
 
     private fun addRecipe(recipeDesc: String, recipeIngredientes: String, recipeName: String) {
-
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val userEmail = prefs.getString("email", null)
         val recipeId =  userRecipesRef?.document()?.id
-        val recipeModel = RecipeModel(recipeId, recipeName, recipeDesc, recipeIngredientes)
+        val recipeModel = RecipeModel(recipeId, recipeName, recipeDesc, recipeIngredientes, userEmail)
         if (recipeId != null) {
             userRecipesRef?.document(recipeId)
                 ?.set(recipeModel)

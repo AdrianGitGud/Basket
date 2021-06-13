@@ -33,9 +33,9 @@ class RecipeAdapter(
         holder.recipeName.text = model.recipeName
         holder.recipeDesc.text = model.recipeDesc
         val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
-        val recipeCreationDate: String = dateFormat.format(model.date)
-        holder.dateTextView.text = "Creada: $recipeCreationDate"
+        holder.dateTextView.text = "Creada: ${dateFormat.format(model.date)}"
         holder.recipeIngredientes.text = model.recipeIngredientes
+        holder.createdBy.text = "Creada por ${model.createdBy}"
     }
 
     fun deleteItem(position: Int) {
@@ -48,6 +48,7 @@ class RecipeAdapter(
         val recipeDesc:TextView = itemView.findViewById(R.id.recipeDescripcion)
         val recipeIngredientes:TextView = itemView.findViewById(R.id.recipeIngredientes)
         val dateTextView: TextView = itemView.findViewById(R.id.recetaFechaCreacion)
+        val createdBy: TextView = itemView.findViewById(R.id.recipeCreatedBy)
 
     }
 }

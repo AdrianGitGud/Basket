@@ -42,12 +42,11 @@
         android:id="@+id/siguienteButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/buttons_shape"
         android:backgroundTint="@color/colorAccent"
         android:fontFamily="@font/montserrat"
@@ -57,6 +56,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/crearListaTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -96,7 +96,8 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/violeta"
-                tools:srcCompat="@mipmap/recetas" />
+                tools:srcCompat="@mipmap/recetas"
+                android:visibility="visible"/>
         </LinearLayout>
 
         <Space
@@ -128,7 +129,7 @@
             android:ems="10"
             android:fontFamily="@font/montserrat"
             android:gravity="start|top"
-            android:hint="Introduce una  descripcion de la receta"
+            android:hint="Introduce una descripción de la receta"
             android:inputType="textMultiLine"
             android:paddingStart="20dp"
             android:paddingLeft="20dp"

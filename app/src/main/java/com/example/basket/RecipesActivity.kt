@@ -35,11 +35,7 @@ class RecipesActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-
-        val bundle =  intent.extras
-        val userEmail = bundle?.getString("email")
-
-        val collectionReference: CollectionReference = FirebaseFirestore.getInstance().collection("recipes").document(userEmail.toString()).collection("userRecipes")
+        val collectionReference: CollectionReference = FirebaseFirestore.getInstance().collection("recipes")
 
         val query: Query = collectionReference.orderBy("date", Query.Direction.DESCENDING)
 

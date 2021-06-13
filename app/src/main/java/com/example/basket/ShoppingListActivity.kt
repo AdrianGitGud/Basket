@@ -29,7 +29,10 @@ class ShoppingListActivity : AppCompatActivity() {
     var productAdapter: ProductAdapter?= null
     private lateinit var id:String
     private lateinit var name:String
+    private lateinit var owner:String
     private var productsRef: CollectionReference? = null
+    private var friendProductsRef: CollectionReference? = null
+    private var ownerListRef: CollectionReference? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
@@ -37,13 +40,14 @@ class ShoppingListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         linearLayoutManager = LinearLayoutManager(this)
-         var recyclerView = binding.itemsRecyclerView
+        var recyclerView = binding.itemsRecyclerView
         recyclerView.layoutManager = linearLayoutManager
 
         val objectIntent: Intent = intent
 
         id = objectIntent.getStringExtra("Id").toString()
         name = objectIntent.getStringExtra("Name").toString()
+        owner = objectIntent.getStringExtra("Owner").toString()
         userProducts()
 
         binding.recetasTextView.text = name
@@ -69,7 +73,7 @@ class ShoppingListActivity : AppCompatActivity() {
             alertDialog.show()
         }
 
-        }
+    }
 
     private fun userProducts(){
 
@@ -79,10 +83,23 @@ class ShoppingListActivity : AppCompatActivity() {
         productsRef = FirebaseFirestore.getInstance()
                 .collection("products")
                 .document(userEmail.toString()).collection("userProducts")
+
+        friendProductsRef = FirebaseFirestore.getInstance()
+                .collection("products")
+                .document(owner).collection("userProducts")
+        ownerListRef = if (owner != userEmail) {
+            FirebaseFirestore.getInstance()
+                    .collection("shoppingLists")
+                    .document(owner)
+                    .collection("userShoppingLists")
+        }else{
+            FirebaseFirestore.getInstance().collection("shoppingLists").document(userEmail.toString()).collection("userShoppingLists")
+        }
     }
 
     private fun addProduct(productName: String) {
-
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val userEmail = prefs.getString("email", null)
         val productId = productsRef?.document()?.id
         val productModel = ProductModel(productId, productName, id)
         if (productId != null) {
@@ -91,21 +108,39 @@ class ShoppingListActivity : AppCompatActivity() {
                     ?.addOnSuccessListener {
                         Toast.makeText(this, "$productName añadido a la lista", Toast.LENGTH_SHORT).show()
                     }
+            if (owner != userEmail){
+                friendProductsRef?.document(productId)
+                        ?.set(productModel)
+            }
         }
     }
 
-    private fun setUpRecyclerView() {
+    private fun deleteItem(){
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val userEmail = prefs.getString("email", null)
+        val productId = productsRef?.document()?.id
 
+        if (productId != null) {
+            productsRef?.document(productId)
+                    ?.delete()
+            if (owner != userEmail){
+                friendProductsRef?.document(productId)
+                        ?.delete()
+            }
+        }
+
+    }
+
+    private fun setUpRecyclerView() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val userEmail = prefs.getString("email", null)
 
-
-
         val collectionReference: CollectionReference = FirebaseFirestore.getInstance()
-                .collection("products")
-                .document(userEmail.toString()).collection("userProducts")
+                    .collection("products")
+                    .document(userEmail.toString()).collection("userProducts")
 
-        val query: Query = collectionReference.whereEqualTo("shoppingListId", id).orderBy("productName", Query.Direction.DESCENDING)
+
+        val query: Query = collectionReference.whereEqualTo("shoppingListId", id)
 
         val options: FirestoreRecyclerOptions<ProductModel> = FirestoreRecyclerOptions.Builder<ProductModel>()
                 .setQuery(query, ProductModel::class.java).setLifecycleOwner(this).build()
@@ -125,7 +160,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                productAdapter!!.deleteItem(viewHolder.adapterPosition)
+                deleteItem()
             }
         }).attachToRecyclerView(recyclerView)
 

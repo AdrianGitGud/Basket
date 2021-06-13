@@ -25,13 +25,24 @@
         tools:text="Paella" />
 
     <TextView
+        android:id="@+id/recipeCreatedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeIngredientes"
+        android:text="Creado por: Adrián Amorós"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:layout_marginStart="8sp"
+        android:layout_marginEnd="8sp"/>
+
+    <TextView
         android:id="@+id/recipeDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recipeTitulo"
         android:layout_marginStart="8sp"
         android:layout_marginLeft="8sp"
-        android:layout_marginTop="25dp"
         android:fontFamily="@font/montserrat"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
@@ -66,9 +77,8 @@
         android:layout_below="@+id/view2"
         android:layout_marginStart="8sp"
         android:layout_marginLeft="8sp"
-        android:layout_marginTop="10dp"
         android:fontFamily="@font/montserrat"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/colorAccent"
         android:textSize="22sp"
         android:text="Ingredientes:" />
 
@@ -79,7 +89,6 @@
         android:layout_below="@+id/recipeIngredientesTitulo"
         android:layout_marginStart="8sp"
         android:layout_marginLeft="8sp"
-        android:layout_marginTop="10dp"
         android:fontFamily="@font/montserrat"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
@@ -88,7 +97,7 @@
         android:layout_width="match_parent"
         android:id="@+id/view"
         android:layout_height="2dp"
-        android:layout_below="@id/recipeIngredientes"
+        android:layout_below="@id/recipeCreatedBy"
         android:layout_margin="8sp"
         android:background = "@color/colorAccent"/>
 

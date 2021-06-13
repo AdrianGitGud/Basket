@@ -12,15 +12,17 @@ class RecipeModel {
         private set
     var recipeIngredientes: String? = null
         private set
-
+    var createdBy:String? = null
+        private set
     @ServerTimestamp
     val date: Date? = null
 
     constructor() {}
-    constructor(recipeId: String?, recipeName: String?, recipeDesc: String?, recipeIngredientes: String?) {
+    constructor(recipeId: String?, recipeName: String?, recipeDesc: String?, recipeIngredientes: String?, createdBy: String?) {
         this.recipeId = recipeId
         this.recipeName = recipeName
         this.recipeDesc = recipeDesc
         this.recipeIngredientes = recipeIngredientes
+        this.createdBy = createdBy
     }
 }

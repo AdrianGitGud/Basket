@@ -34,8 +34,7 @@ class ShoppingAdapter(
         holder.shoppingListNameTextView.text = model.shoppingListName
         holder.createdByTextView.text = model.createdBy
         val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
-        val shoppingListCreationDate: String = dateFormat.format(model.date)
-        holder.dateTextView.text = "Creada: $shoppingListCreationDate"
+        holder.dateTextView.text = "Creada: ${dateFormat.format(model.date)}"
         holder.idTextView.text = model.shoppingListId
     }
 
@@ -64,7 +63,7 @@ class ShoppingAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position, idTextView.text, shoppingListNameTextView.text)
+                listener.onItemClick(position, idTextView.text, shoppingListNameTextView.text, createdByTextView.text)
             }
         }
 
@@ -79,7 +78,7 @@ class ShoppingAdapter(
 
     interface OnItemClickListener {
 
-        fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence)
+        fun onItemClick(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence)
         fun onItemHold(position: Int, id: CharSequence, shoppingListNameTextView: CharSequence, createdByTextView: CharSequence)
     }
 }
