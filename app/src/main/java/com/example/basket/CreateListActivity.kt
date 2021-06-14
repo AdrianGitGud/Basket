@@ -38,7 +38,7 @@ class CreateListActivity : AppCompatActivity() {
                 val shoppingListName = binding.crearListaNombre.text.toString()
                 addShoppingList(shoppingListName)
                 startActivity(Intent(this, ListActivity::class.java))
-                finish()
+                onBackPressed()
             } else {
 
                 binding.crearListaNombre.error = "Debes ponerle un nombre a la lista"

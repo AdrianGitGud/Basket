@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#264653</color>
     <color name="colorSecondary">#E9C46A</color>
-    <color name="colorTertiary">#F4A261</color>
-    <color name="colorQuaternary">#E76F51</color>
+    <color name="colorTertiary">#A30000</color>
+    <color name="colorQuaternary">#007500</color>
     <color name="colorPrimaryDark">#1A2F38</color>
     <color name="colorAccent">#2A9D8F</color>
 </resources>

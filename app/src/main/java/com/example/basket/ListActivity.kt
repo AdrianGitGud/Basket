@@ -1,15 +1,15 @@
 package com.example.basket
 
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.size
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +21,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
 class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
@@ -63,18 +64,17 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
         val userEmail = bundle?.getString("email")
         val shoppingListModel = ShoppingListModel(id.toString(), shoppingListNameTextView.toString(), userEmail)
 
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
         builder.setTitle("Comparte esta lista")
         val editText = EditText(this)
         editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
-        editText.setText(shoppingListNameTextView)
         editText.setSelection(editText.text.length)
         editText.hint = "Escribe el email de tu amigo"
         editText.setHintTextColor(Color.GRAY)
         builder.setView(editText)
         val rootRef = FirebaseFirestore.getInstance()
         builder.setPositiveButton("Aceptar") { dialogInterface, i ->
-            friendEmail = editText.text.toString().trim { it <= ' ' }
+            friendEmail = editText.text.toString().toLowerCase().trim { it <= ' ' }
             rootRef.collection("shoppingLists").document(friendEmail)
                     .collection("userShoppingLists").document(id as String)
                     .set(shoppingListModel).addOnSuccessListener {
@@ -89,6 +89,7 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
                         rootRef.collection("shoppingLists").document(friendEmail)
                                 .collection("userShoppingLists").document(id)
                                 .update(users)
+                    Toast.makeText(this,"Lista compartida con $friendEmail", Toast.LENGTH_SHORT).show()
                     }
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
@@ -124,9 +125,20 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
                 shoppingAdapter!!.deleteItem(viewHolder.adapterPosition)
 
             }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(this@ListActivity, R.color.colorTertiary))
+                        .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                        .create()
+                        .decorate()
+            }
+
         }).attachToRecyclerView(recyclerView)
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
@@ -136,7 +148,7 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val builder = AlertDialog.Builder(this@ListActivity)
+                val builder = AlertDialog.Builder(this@ListActivity, R.style.MyDialogTheme)
                 builder.setTitle("Editar nombre de la lista")
                 val editText = EditText(this@ListActivity)
                 editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
@@ -158,12 +170,26 @@ class ListActivity : AppCompatActivity(), ShoppingAdapter.OnItemClickListener {
                 val alertDialog: AlertDialog = builder.create()
                 alertDialog.show()
             }
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(this@ListActivity, R.color.colorQuaternary))
+                        .addSwipeRightActionIcon(R.drawable.ic_baseline_edit_24)
+                        .create()
+                        .decorate()
+
+            }
 
         }).attachToRecyclerView(recyclerView)
     }
 
     override fun onStart() {
         super.onStart()
+        shoppingAdapter!!.startListening()
+    }
+
+    override fun onResume() {
+        super.onResume()
         shoppingAdapter!!.startListening()
     }
 

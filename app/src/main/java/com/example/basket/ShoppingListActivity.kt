@@ -2,6 +2,7 @@ package com.example.basket
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
 class ShoppingListActivity : AppCompatActivity() {
@@ -56,7 +59,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
         binding.fabAddproduct.setOnClickListener {
 
-            val builder = AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(this, R.style.MyDialogTheme)
             builder.setTitle("Añade un producto")
             val editText = EditText(this)
             editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
@@ -115,7 +118,7 @@ class ShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteItem(){
+    private fun deleteProduct(){
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val userEmail = prefs.getString("email", null)
         val productId = productsRef?.document()?.id
@@ -160,38 +163,16 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                deleteItem()
-            }
-        }).attachToRecyclerView(recyclerView)
-
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
+                productAdapter!!.deleteItem(viewHolder.adapterPosition)
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val builder = AlertDialog.Builder(this@ShoppingListActivity)
-                builder.setTitle("Editar nombre de la lista")
-                val editText = EditText(this@ShoppingListActivity)
-                editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
-                editText.setSelection(editText.text.length)
-                editText.hint = "Escribe un nombre"
-                editText.setHintTextColor(Color.GRAY)
-                builder.setView(editText)
-                val map: MutableMap<String, Any> = HashMap()
-                builder.setPositiveButton("Actualizar") { dialogInterface, i ->
-                    val newProductName = editText.text.toString().trim { it <= ' ' }
-                    if (newProductName.isBlank()) {
-                        editText.error = "Debes ingresar un nombre"
-                        return@setPositiveButton
-                    }
-                    map["productName"] = newProductName
-                    productAdapter!!.editItem(viewHolder.adapterPosition, map)
-                }
-                builder.setNegativeButton("Cancelar") { dialogInterface, i -> dialogInterface.dismiss() }
-                val alertDialog: AlertDialog = builder.create()
-                alertDialog.show()
+           override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(this@ShoppingListActivity, R.color.colorTertiary))
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                    .create()
+                    .decorate()
             }
 
         }).attachToRecyclerView(recyclerView)

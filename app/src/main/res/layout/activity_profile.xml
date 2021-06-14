@@ -36,7 +36,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:background="@mipmap/profile" />
+                android:src="@mipmap/profile" />
 
             <Space
                 android:layout_width="match_parent"
